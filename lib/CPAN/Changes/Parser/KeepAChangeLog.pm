@@ -3,7 +3,7 @@ package CPAN::Changes::Parser::KeepAChangeLog;
 use strict;
 use warnings;
 
-our $VERSION = '0.1.0';
+our $VERSION = '0.1.1';
 
 use Moo;
 extends 'CPAN::Changes::Parser';
