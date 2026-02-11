@@ -3,6 +3,8 @@ package CPAN::Changes::Parser::KeepAChangeLog;
 use strict;
 use warnings;
 
+our $VERSION = '0.01';
+
 use Moo;
 extends 'CPAN::Changes::Parser';
 
@@ -115,4 +117,89 @@ sub _kac_to_cpan_changes_spec {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+CPAN::Changes::Parser::KeepAChangeLog - Parser for Keep a Changelog formatted files
+
+=head1 SYNOPSIS
+
+    use CPAN::Changes::Parser::KeepAChangeLog;
+    
+    my $parser = CPAN::Changes::Parser::KeepAChangeLog->new;
+    my $changes = $parser->parse_file('CHANGELOG.md');
+    
+    for my $release ($changes->releases) {
+        printf "%s %s\n", $release->version, $release->date;
+        for my $entry ($release->entries) {
+            printf "  - %s\n", $entry->text;
+        }
+    }
+
+=head1 DESCRIPTION
+
+This module extends L<CPAN::Changes::Parser> to parse changelog files that follow
+the Keep a Changelog format (L<https://keepachangelog.com/>) version 1.1.0.
+
+Keep a Changelog uses Markdown-style formatting with specific conventions for
+releases and change categories. This parser transforms that format into
+CPAN::Changes objects that can be used within the Perl ecosystem.
+
+=head2 Supported Format Features
+
+=over 4
+
+=item * Release headings: C<## [version] - date> or C<## [Unreleased]>
+
+=item * Category headings: C<### Added>, C<### Fixed>, etc.
+
+=item * Bulleted lists with C<-> or C<*>
+
+=item * Link reference definitions (automatically filtered out)
+
+=back
+
+=head1 METHODS
+
+This module inherits all methods from L<CPAN::Changes::Parser>.
+
+=head2 parse_string
+
+    my $changes = $parser->parse_string($changelog_string);
+
+Parses a Keep a Changelog formatted string and returns a L<CPAN::Changes>
+object, or C<undef> if the string does not appear to be in Keep a Changelog format.
+
+=head1 ATTRIBUTES
+
+=head2 version_like
+
+This attribute is overridden to recognize "Unreleased" as a valid version identifier.
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<CPAN::Changes::Parser>
+
+=item * L<CPAN::Changes>
+
+=item * L<https://keepachangelog.com/>
+
+=back
+
+=head1 AUTHOR
+
+Dave Cross <dave@perlhacks.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2026 by Dave Cross.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
 
